@@ -4,5 +4,13 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"makefile.launchConfigurations": [
+			{
+				"cwd": "c:\\WORKBENCH\\usb_cdc_test\\build",
+				"binaryPath": "c:\\WORKBENCH\\usb_cdc_test\\build\\cubemx.elf",
+				"binaryArgs": []
+			}
+		]
+	}
 }
