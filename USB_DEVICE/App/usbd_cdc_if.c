@@ -32,6 +32,7 @@
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 
+
 /* USER CODE END PV */
 
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
@@ -109,6 +110,7 @@ uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
 /* USER CODE BEGIN EXPORTED_VARIABLES */
+// extern StreamBufferHandle_t  sdu_stream_buf_handle;
 
 /* USER CODE END EXPORTED_VARIABLES */
 
@@ -152,6 +154,7 @@ USBD_CDC_ItfTypeDef USBD_Interface_fops_FS =
 static int8_t CDC_Init_FS(void)
 {
   /* USER CODE BEGIN 3 */
+
   /* Set Application Buffers */
   USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, 0);
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, UserRxBufferFS);
@@ -263,7 +266,22 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
   /* USER CODE BEGIN 6 */
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
-  CDC_Transmit_FS(Buf,*Len);
+
+  	BaseType_t xHigherPriorityTaskWoken[*Len]; 
+  	memset(xHigherPriorityTaskWoken,pdFALSE,*Len);
+
+	for(int ix = 0;ix<(*Len);++ix){
+		xQueueSendFromISR(sduQueueHandle,Buf+ix,xHigherPriorityTaskWoken+ix);
+	}
+
+	for(int ix = 0;ix<(*Len);++ix){
+		if(pdTRUE==xHigherPriorityTaskWoken[ix]){
+			portYIELD_FROM_ISR(pdTRUE); 
+			break;
+		}
+	}
+
+
   return (USBD_OK);
   /* USER CODE END 6 */
 }

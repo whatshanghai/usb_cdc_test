@@ -17,7 +17,7 @@
 			],
 			"searchDir": [],
 			"runToEntryPoint": "main",
-			"showDevDebugOutput": "raw",
+			"showDevDebugOutput": "none",
 			"svdFile": "./STM32F469.svd",
 			"liveWatch": {
 				"enabled": true,

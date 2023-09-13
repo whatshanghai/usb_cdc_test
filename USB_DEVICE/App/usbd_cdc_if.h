@@ -30,7 +30,10 @@
 #include "usbd_cdc.h"
 
 /* USER CODE BEGIN INCLUDE */
-
+#include "FreeRTOS.h"
+#include "queue.h"
+#include "main.h"
+#include "cmsis_os.h"
 /* USER CODE END INCLUDE */
 
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
@@ -93,6 +96,7 @@
 extern USBD_CDC_ItfTypeDef USBD_Interface_fops_FS;
 
 /* USER CODE BEGIN EXPORTED_VARIABLES */
+extern osMessageQueueId_t  sduQueueHandle;
 
 /* USER CODE END EXPORTED_VARIABLES */
 

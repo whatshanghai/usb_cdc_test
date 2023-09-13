@@ -25,10 +25,11 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "app_sdu.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
+
 /* USER CODE BEGIN PTD */
 
 /* USER CODE END PTD */
@@ -54,6 +55,7 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for sduQueue */
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -64,6 +66,24 @@ void StartDefaultTask(void *argument);
 
 extern void MX_USB_DEVICE_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
+
+/* Hook prototypes */
+void vApplicationIdleHook(void);
+
+/* USER CODE BEGIN 2 */
+void vApplicationIdleHook( void )
+{
+   /* vApplicationIdleHook() will only be called if configUSE_IDLE_HOOK is set
+   to 1 in FreeRTOSConfig.h. It will be called on each iteration of the idle
+   task. It is essential that code added to this hook function never attempts
+   to block in any way (for example, call xQueueReceive() with a block time
+   specified, or call vTaskDelay()). If the application makes use of the
+   vTaskDelete() API function (as this demo application does) then it is also
+   important that vApplicationIdleHook() is permitted to return to its calling
+   function, because it is the responsibility of the idle task to clean up
+   memory allocated by the kernel to any task that has since been deleted. */
+}
+/* USER CODE END 2 */
 
 /**
   * @brief  FreeRTOS initialization
@@ -86,6 +106,9 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
+
+  /* Create the queue(s) */
+  /* creation of sduQueue */
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
@@ -117,10 +140,12 @@ void StartDefaultTask(void *argument)
   /* init code for USB_DEVICE */
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN StartDefaultTask */
+	sdu.m_xInitialize();
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	HAL_GPIO_TogglePin(LED_GPIO_Port,LED_Pin);
+    osDelay(233);
   }
   /* USER CODE END StartDefaultTask */
 }
