@@ -185,7 +185,8 @@ uint8_t u8UTILS_GetCheckXor(uint8_t *pBuf,uint16_t len);
 
 uint16_t u16UTILS_GetCheckSum(uint16_t *pBuf,uint16_t len);
 uint16_t u16UTILS_GetCheckXor(uint16_t *pBuf,uint16_t len);
-uint16_t u16UTILS_GetCheckCrc(uint8_t *puchMsg, uint16_t usDataLen) ;
+uint16_t u16UTILS_GetCheckCrcModbusRTU(uint8_t *puchMsg, uint16_t usDataLen) ;
+uint16_t u16UTILS_GetCheckCrc16(unsigned char *buf, unsigned int len);
 
 uint32_t u32UTILS_GetCheckSum(uint32_t *pBuf,uint32_t len);
 uint32_t u32UTILS_GetCheckXor(uint32_t *pBuf,uint32_t len);

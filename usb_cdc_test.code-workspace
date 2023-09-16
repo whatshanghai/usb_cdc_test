@@ -18,7 +18,8 @@
 			"usbd_cdc_if.h": "c",
 			"freertos.h": "c",
 			"queue.h": "c",
-			"app_sdu.h": "c"
+			"app_sdu.h": "c",
+			"stm32f4xx.h": "c"
 		}
 	}
 }
